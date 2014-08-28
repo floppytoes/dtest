@@ -30,20 +30,20 @@ end
 
 unless File.directory?(dir_data_static)
 	puts "cannot find static data dir #{dir_data_static}"
-	puts "even if you don't use any, do me a favor and create an empty directory here"
+	puts "even if you don't use any, do me a favor and create an empty directory here and restart"
 	exit
 end
 
 unless File.directory?(dir_data_gen)
 	puts "cannot find output directory #{dir_data_gen}"
-	puts "please don't make me push this into the current dir - just create this"
+	puts "please don't make me push this into the current dir - just create this and restart"
 	exit
 end
 
 
 
 
-in_f = File.open(in_fn, "r")
+in_f = File.open(in_fn_full, "r")
 iline = 0
 sqlout_fn = false
 qout_fn = false
@@ -53,7 +53,6 @@ sqlin_fn = []
 qin_fn = []
 while (line = in_f.gets)
 	iline = iline + 1 
-	#print "#{iline}: #{line}"
 	if line =~ /^\s*#/ or line =~ /^\s*$/
 		# skip comments and blank line
 	elsif line =~ /^\s*\[sqlout=(.*)\]\s*$/
@@ -94,7 +93,7 @@ while (line = in_f.gets)
 				tableList << t
 			end
 		else
-			puts "error: does not match any internal tables"
+			puts "error: gentableinternal but does not match any internal tables"
 			exit
 		end
 	elsif line =~ /^\s*\[gentable=\"?(\w*)\"?\s+$/
@@ -191,12 +190,13 @@ while (line = in_f.gets)
 
 	end
 end
+# configs all read
 
 
 # read in static data
-
 sqldata_static = []
 sqlin_fn.each do |x|
+	x = dir_data_static + x
 	if debug_trace then puts "loading #{x} as static sql" end
 	if File.exist?(x)
 		infile = File.open(x, "r")
@@ -211,6 +211,7 @@ end
 
 qdata_static = []
 qin_fn.each do |x|
+	x = dir_data_static + x
 	if debug_trace then puts "loading #{x} as static q" end
 	if File.exist?(x)
 		infile = File.open(x, "r")
@@ -226,7 +227,7 @@ end
 # open files for writing
 
 if sqlout_fn 
-	sqlout = File.open(testdata_directory + "/" + sqlout_fn, "w") 
+	sqlout = File.open(dir_data_gen + sqlout_fn, "w") 
 
 	# static data
 	sqldata_static.each do |x|
@@ -246,7 +247,7 @@ if sqlout_fn
 end
 
 if qout_fn   
-	qout = File.open(testdata_directory + "/" + qout_fn, "w")
+	qout = File.open(dir_data_gen + qout_fn, "w")
 
 	# static data
 	qdata_static.each do |x|
@@ -268,24 +269,7 @@ end
 
 
 exit
-# random data
 
-
-
-
-puts "sqlout_fn: #{sqlout_fn}"
-puts "qout_fn:   #{qout_fn}"
-
-
-
-
-sqlin_fn.each do |x|
-	puts "load #{x}"
-end
-
-qin_fn.each do |x|
-	puts "load #{x}"
-end
 
 
 
