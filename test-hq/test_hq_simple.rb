@@ -97,7 +97,8 @@ end
 ##############
 if ARGV.length != 2 || ARGV[0] =~ /^[-\/]h(elp)?$/
   puts "usage: #{$0} <test_script.q> <qdata.q>"
-  puts "ex: ruby test_hq_simple.rb hq-testscript1.qZ hq-test1-data.qZ"
+  puts "ex: ruby test_hq_simple.rb hq-testscript1.q hq-test1-data.q"
+  puts "reminder: before starting be sure you ran psql and loaded the corresponding sql file"
   exit
 end
 
