@@ -24,7 +24,12 @@ start_qkdb = "/Users/jdbloom/Dropbox/src/q/m32/q"
 q_test_query1 = "2 + 3"
 q_test_result1 = "5"
 
-q_load_file_command = "\\l testdata.q\n"
+
+test_script_fn = ARGV[0]
+test_data_fn = ARGV[1]
+
+test_script_path = "test-scripts/"
+test_data_path   = "../gen-data/data-out/"
 
 q_openhyperq_command = "h:hopen `::6003\n"
 
@@ -90,17 +95,34 @@ end
 
 # start execution
 ##############
-if ARGV.length == 0 || ARGV[0] =~ /^[-\/]h(elp)?$/
-  puts "usage: #{$0} <input_file>"
+if ARGV.length != 2 || ARGV[0] =~ /^[-\/]h(elp)?$/
+  puts "usage: #{$0} <test_script.q> <qdata.q>"
+  puts "ex: ruby test_hq_simple.rb hq-testscript1.qZ hq-test1-data.qZ"
   exit
 end
 
-testfile = ARGV[0]
+test_script_fn = ARGV[0]
+test_data_fn = ARGV[1]
 
-unless File.exist?(testfile)
-  puts "cannot load #{testfile}"
+
+if File.exist?(test_script_path + test_script_fn)
+  test_script_fn = test_script_path + test_script_fn
+elsif ! File.exist?(test_script_fn)
+  puts "Cannot find a test script #{test_script_fn} - exiting "
   exit
 end
+
+if File.exist?(test_data_path + test_data_fn)
+  test_data_fn = test_data_path + test_data_fn
+elsif ! File.exist?(test_data_fn)
+  puts "Cannot find a test data #{test_data_fn} - exiting "
+  exit
+end
+
+q_load_file_command = "\\l " + test_data_fn + "\n"
+
+#puts "test_script_fn: #{test_script_fn}"
+#puts "test_data_fn: #{test_data_fn}"
 
 qkdb_totaltesttime = 0
 hypq_totaltesttime = 0
@@ -148,7 +170,8 @@ while true
   end
 end
 
-#puts "hello?"
+
+
 
 t_stop = Time.now
 
@@ -179,7 +202,7 @@ unless (line == q_test_result1)
 end
 
 # handle is open, now open test file and start tests
-f = File.open(testfile, "r")
+f = File.open(test_script_fn, "r")
 line_number = 0
 tests_failed = 0
 failed = {}

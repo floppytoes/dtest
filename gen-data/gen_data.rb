@@ -1,8 +1,8 @@
-require 'bloom_libs/bloom_lib_table.rb'
+require '../bloom_libs/bloom_lib_table.rb'
 
 dir_configs 		= "configs/"
 dir_data_static = "data-static/"
-dir_data_gen 		= "data-gen/"
+dir_data_gen 		= "data-out/"
 
 
 

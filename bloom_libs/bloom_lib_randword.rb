@@ -1,7 +1,8 @@
 # bloom_lib_randword.rb
 
+
 class RandWordGen
-	def initialize(input_filename = "bloom_libs/words_random.txt")
+	def initialize(input_filename = "../bloom_libs/words_random.txt")
 		@words = []
 
 		input_file = File.open(input_filename, 'r')

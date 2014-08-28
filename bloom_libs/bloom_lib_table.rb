@@ -1,5 +1,5 @@
 
-require './bloom_libs/bloom_lib_randword'
+require '../bloom_libs/bloom_lib_randword'
 
 # bloom_lib_table.rb
 
