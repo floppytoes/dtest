@@ -1,0 +1,1 @@
+select bf10,df10 from b,d where (bf1 > df4 + 2 and df1 > bf4 + 0) or ((bf5 = df5)  and (bf5 = df7) );

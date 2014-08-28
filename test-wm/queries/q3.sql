@@ -1,0 +1,1 @@
+select cf10,af10 from c,a where (cf1 > af4 + 1 and af1 > cf4 + 4) or ((cf5 = af5)  and (cf5 = af7) );
