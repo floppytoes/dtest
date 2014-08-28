@@ -1,1 +1,0 @@
-select ef10,cf10 from e,c where (ef1 > cf4 + 3 and cf1 > ef4 + 1) or ((ef5 = cf5)  and (ef5 = cf7) );

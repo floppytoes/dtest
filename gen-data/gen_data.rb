@@ -1,6 +1,9 @@
 require 'bloom_libs/bloom_lib_table.rb'
 
-testdata_directory = "testdata"
+dir_configs 		= "configs/"
+dir_data_static = "data-static/"
+dir_data_gen 		= "data-gen/"
+
 
 
 if ARGV.length == 0 || ARGV[0] =~ /^[-\/]h(elp)?$/
@@ -12,16 +15,31 @@ debug_trace = false
 
 
 in_fn = ARGV[0]
+in_fn_full = dir_configs + in_fn
 
-unless File.exist?(in_fn)
-	puts "cannot load #{in_fn}"
+
+unless File.exist?(in_fn_full)
+	puts "cannot load #{in_fn_full}"
+	if File.exist?(in_fn)
+		puts "will use #{in_fn} in the current directory"
+		in_fn_full = in_fn
+	else
+		exit
+	end
+end
+
+unless File.directory?(dir_data_static)
+	puts "cannot find static data dir #{dir_data_static}"
+	puts "even if you don't use any, do me a favor and create an empty directory here"
 	exit
 end
 
-unless File.directory?(testdata_directory)
-	puts "cannot find dir #{testdata_directory}"
+unless File.directory?(dir_data_gen)
+	puts "cannot find output directory #{dir_data_gen}"
+	puts "please don't make me push this into the current dir - just create this"
 	exit
 end
+
 
 
 
